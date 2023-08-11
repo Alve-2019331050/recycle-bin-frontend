@@ -9,7 +9,7 @@ import {
   MdLockOutline, MdPersonOutline, MdPhoneAndroid
 } from 'react-icons/md';
 
-export default function Signup() {
+const Signup =() => {
   return (
     <Layout>
       <main className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -77,3 +77,5 @@ export default function Signup() {
     </Layout>
   )
 }
+
+export default Signup;
