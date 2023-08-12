@@ -1,15 +1,10 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import Link from "next/link";
-import Layout from "../components/Layout";
+import Homepage from "./homepage";
 
 function index() {
   return (
-    <>
-      <Layout>
-        <Link href="/sell">Sell a product</Link>
-      </Layout>
-    </>
-  );
+    // <ProductCatalog></ProductCatalog>
+    <Homepage></Homepage>
+  )
 }
 
 export default index;
