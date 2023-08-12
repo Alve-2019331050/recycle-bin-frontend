@@ -1,11 +1,15 @@
-import Layout from "@/components/Layout"
-
-
+/* eslint-disable react-hooks/rules-of-hooks */
+import Link from "next/link";
+import Layout from "../components/Layout";
 
 function index() {
   return (
-    <Layout title="Home Page">Home Page</Layout>
-  )
+    <>
+      <Layout>
+        <Link href="/sell">Sell a product</Link>
+      </Layout>
+    </>
+  );
 }
 
-export default index
+export default index;
