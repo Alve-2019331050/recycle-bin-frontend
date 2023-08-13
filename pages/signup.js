@@ -1,15 +1,51 @@
-import Layout from "@/components/Layout"
-import React from 'react'
-import Link from 'next/link'
+import Layout from "@/components/Layout";
+import axios from "axios";
+import Link from 'next/link';
+import { useRouter } from "next/router";
+import { useState } from "react";
 import {
   FaFacebookF, FaGoogle, FaLinkedinIn, FaRegEnvelope,
-
 } from 'react-icons/fa';
 import {
   MdLockOutline, MdPersonOutline, MdPhoneAndroid
 } from 'react-icons/md';
+import { RxAvatar } from 'react-icons/rx';
+import { toast } from 'react-toastify';
 
 const Signup =() => {
+  const [avatar,setAvatar] = useState(null);
+  const [name,setName] = useState('');
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+  const [phone,setPhone] = useState('');
+  const router = useRouter();
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    try {
+      const config = {headers:{"Content-Type":"multipart/form-data"}};
+
+      const newForm = new FormData();
+
+      newForm.append("avatar",avatar);
+      newForm.append("name",name);
+      newForm.append("email",email);
+      newForm.append("password",password);
+      newForm.append("phone",phone);
+      const res = await axios.post('http://localhost:8080/api/v1/auth/register',newForm,config);
+      if(res.data.success){
+        toast.success(res.data.message);
+        router.push('/login');
+      }
+      else{
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong');
+    }
+  }
+
   return (
     <Layout>
       <main className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -40,23 +76,44 @@ const Signup =() => {
                 <div className='flex flex-col items-center'>
                   <div className='bg-gray-100 w-80 p-2 flex items-center mb-3'>
                     <MdPersonOutline className='text-gray-400 m-3' />
-                    <input type='text' name='userName' placeholder='User Name' className='bg-gray-100 text-base outline-none flex-1'></input>
+                    <input type='text' name='userName' placeholder='User Name' value={name} onChange={(e)=>setName(e.target.value)} className='bg-gray-100 text-base outline-none flex-1'></input>
                   </div>
                   <div className='bg-gray-100 w-80 p-2 flex items-center mb-3'>
                     <MdPhoneAndroid className='text-gray-400 m-3' />
-                    <input type='number' name='mobileNumber' placeholder='Mobile Number' className='bg-gray-100 text-base outline-none flex-1'></input>
+                    <input type='number' name='mobileNumber' placeholder='Mobile Number' value={phone} onChange={(e)=>setPhone(e.target.value)} className='bg-gray-100 text-base outline-none flex-1'></input>
                   </div>
                   <div className='bg-gray-100 w-80 p-2 flex items-center mb-3'>
                     <FaRegEnvelope className='text-gray-400 m-3' />
-                    <input type='email' name='email' placeholder='Email' className='bg-gray-100 text-base outline-none flex-1'></input>
+                    <input type='email' name='email' placeholder='Email' value={email} onChange={(e)=>setEmail(e.target.value)} className='bg-gray-100 text-base outline-none flex-1'></input>
                   </div>
-                  <div className='bg-gray-100 w-80 p-2 flex items-center'>
+                  <div className='bg-gray-100 w-80 p-2 flex items-center mb-3'>
                     <MdLockOutline className='text-gray-400 m-3' />
-                    <input type='password' name='password' placeholder='Password' className='bg-gray-100 text-base outline-none flex-1'></input>
+                    <input type='password' name='password' placeholder='Password' value={password} onChange={(e)=>setPassword(e.target.value)} className='bg-gray-100 text-base outline-none flex-1'></input>
                   </div>
 
-                  <a href="#" className="bg-white mt-5 border-4 border-violet-900 rounded-full px-12 py-2 shadow-2xl 
-                text-violet-900 hover:bg-violet-900 hover:text-white">Register</a>
+                  <div>
+                    <label htmlFor="avatar" className="block text-sm font-medium text-gray-700">
+
+                    </label>
+                    <div className="mt-2 flex items-center">
+                      <span className="inline-block h-8 w-8 rounded-full overflow-hidden">
+                        {
+                          avatar?(
+                            <img src={URL.createObjectURL(avatar)} alt="avatar" className="h-full w-full object-cover rounded-full" />
+                          ):(
+                            <RxAvatar className="h-8 w-8"></RxAvatar>
+                          )
+                        }
+                      </span>
+                      <label htmlFor="file-input" className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-500">
+                        <span>Upload your photo</span>
+                        <input type="file" name="avatar" id="file-input" accept='image/*' onChange={(e)=>setAvatar(e.target.files[0])} className="sr-only" />
+                      </label>
+                    </div>
+                  </div>
+
+                  <button onClick={handleSubmit} className="bg-white mt-5 border-4 border-violet-900 rounded-full px-12 py-2 shadow-2xl 
+                text-violet-900 hover:bg-violet-900 hover:text-white">Register</button>
                 </div>
               </div>
             </div>

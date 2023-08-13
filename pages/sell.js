@@ -4,7 +4,7 @@ import { Select } from 'antd';
 import axios from 'axios';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
 const {Option} = Select;
 
 export default function sell() {
@@ -62,7 +62,7 @@ export default function sell() {
             const {data} = await axios.post('http://localhost:8080/api/v1/product/create-product',productData);
             if(data?.success){
                 toast.success('Product created successfully');
-                router.push('/products');
+                router.push('/ProductCatalog');
             }
             else{
                 toast.error(data?.message);

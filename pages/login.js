@@ -1,14 +1,47 @@
-import Layout from "@/components/Layout"
-import React from 'react'
-import Link from 'next/link'
+import Layout from "@/components/Layout";
+import { useAuth } from "@/context/auth";
+import axios from "axios";
+import Link from 'next/link';
+import { useRouter } from "next/router";
+import { useState } from "react";
 import {
   FaFacebookF, FaGoogle, FaLinkedinIn, FaRegEnvelope
 } from 'react-icons/fa';
 import {
   MdLockOutline
 } from 'react-icons/md';
+import { toast } from 'react-toastify';
 
 export default function Login() {
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+  const router = useRouter();
+  const [auth,setAuth] = useAuth();
+
+  const handleLogin = async(e)=>{
+    e.preventDefault();
+    try {
+      console.log(email,password);
+        const res = await axios.post('http://localhost:8080/api/v1/auth/login',{
+          email,
+          password
+        });
+        if(res.data.success){
+          toast.success(res.data.message);
+          setAuth({
+            user:res.data.user,
+            token:res.data.token
+          });
+          router.push('/');
+        }
+        else{
+          toast.error(res.data.message);
+        }
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong');
+    }
+  }
   return (
     <Layout>
       <main className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -39,11 +72,11 @@ export default function Login() {
                 <div className='flex flex-col items-center'>
                   <div className='bg-gray-100 w-80 p-2 flex items-center mb-3'>
                     <FaRegEnvelope className='text-gray-400 m-3' />
-                    <input type='email' name='email' placeholder='Email' className='bg-gray-100 text-base outline-none flex-1'></input>
+                    <input type='email' name='email' placeholder='Email' value={email} onChange={(e)=>setEmail(e.target.value)} className='bg-gray-100 text-base outline-none flex-1'></input>
                   </div>
                   <div className='bg-gray-100 w-80 p-2 flex items-center'>
                     <MdLockOutline className='text-gray-400 m-3' />
-                    <input type='password' name='password' placeholder='Password' className='bg-gray-100 text-base outline-none flex-1'></input>
+                    <input type='password' name='password' placeholder='Password' value={password} onChange={(e)=>setPassword(e.target.value)} className='bg-gray-100 text-base outline-none flex-1'></input>
                   </div>
                   <div className='flex w-80 mb-5 mt-3 justify-between'>
                     <label className='flex items-center text-xs'>
@@ -51,7 +84,7 @@ export default function Login() {
                     </label>
                     <a href='#' className='text-xs hover:font-bold'>Forgot Password?</a>
                   </div>
-                  <a href="#" className="bg-white border-4 border-violet-900 rounded-full px-12 py-2 shadow-2xl text-violet-900 hover:bg-violet-900 hover:text-white">Sign In</a>
+                  <button onClick={handleLogin} className="bg-white border-4 border-violet-900 rounded-full px-12 py-2 shadow-2xl text-violet-900 hover:bg-violet-900 hover:text-white">Sign In</button>
                 </div>
               </div>
             </div>
