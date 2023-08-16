@@ -34,8 +34,8 @@ const Signup =() => {
       newForm.append("phone",phone);
       const res = await axios.post('http://localhost:8080/api/v1/auth/register',newForm,config);
       if(res.data.success){
-        toast.success(res.data.message);
         router.push('/login');
+        toast.success(res.data.message);
       }
       else{
         toast.error(res.data.message);

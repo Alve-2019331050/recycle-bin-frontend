@@ -158,11 +158,11 @@ const ProductCatalog = () => {
                             searchData && searchData.length !==0 ? (
                                 <div className="mt-10 absolute min-h-[30vh] max-w-[70vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
                                     {searchData.map((i,index)=>{
-                                        const d = i.name;
-                                        const productName = d.replace(/\s+/g,"-");
+                                        const d = i.slug;
+                                        const productSlug = d.replace(/\s+/g,"-");
                                         return(
                                             // eslint-disable-next-line react/jsx-key
-                                            <Link href={`/product/${productName}`}>
+                                            <Link href={`/product/${productSlug}`}>
                                                 <div className="mt-5 w-full flex items-start-py-3">
                                                     <img src={`http://localhost:8080/${i.photo}`} className="w-[40px] h-[40px] mr-[10px]" />
                                                     <h1>{i.name}</h1>
@@ -228,7 +228,9 @@ const ProductCatalog = () => {
                             products.map((product,index)=>{
                                 return(
                                     <div key={index}>
-                                        <ProductCard product={product} />
+                                        <Link href={`/product/${product.slug}`}>
+                                            <ProductCard product={product} />
+                                        </Link>
                                     </div>
                                 );
                             })

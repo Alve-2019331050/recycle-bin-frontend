@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import Layout from "@/components/Layout";
+import { useAuth } from "@/context/auth";
 import { Select } from 'antd';
 import axios from 'axios';
 import { useRouter } from "next/router";
@@ -17,6 +18,7 @@ export default function sell() {
     const [price,setPrice] = useState("");
     const [photo,setPhoto] = useState("");
     const router = useRouter();
+    const [auth] = useAuth();
 
     //handle newCategory form submit
     const handleSubmit = async(e)=>{
@@ -58,6 +60,7 @@ export default function sell() {
             productData.append("price",price);
             productData.append("category",category);
             productData.append("photo",photo);
+            productData.append("id",auth.user.u_id);
 
             const {data} = await axios.post('http://localhost:8080/api/v1/product/create-product',productData);
             if(data?.success){

@@ -1,29 +1,55 @@
+import { useStore } from "@/context/Store";
 import { useAuth } from "@/context/auth";
+import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { FiLogOut } from 'react-icons/fi';
 import { MdOutlineProductionQuantityLimits } from 'react-icons/md';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Layout({ title, children }) {
     const [auth,setAuth] = useAuth();
+    const [cartItems,setCartItems] = useStore();
     const router = useRouter();
-
-    const handleLogout = (e)=>{
-        e.preventDefault();
-        setAuth({
-            user:null,
-            token:''
+    const handleLogout = ()=>{
+        axios.get('http://localhost:8080/api/v1/auth/logout').then((res)=>{
+            toast.success(res.data.message);
+            setAuth({
+                ...auth,
+                user:null,
+                token:''
+            });
+            window.localStorage.removeItem('auth');
+            router.push('/login');
+        }).catch((error)=>{
+            console.log(error.respose.data.message);
         });
-        router.push('/login');
-    }
+    };
 
-    const showUserInfo = (e)=>{
-        e.preventDefault();
-        
-    }
+    const getCartItems = async() => {
+        const {data} = await axios.get(`http://localhost:8080/api/v1/cart/getItems?b_id=${auth.user.u_id}`);
+        if(data?.success){
+            const object = [];
+            data.product.forEach((product,index) => {
+                object.push({
+                    product,
+                    quantity: data.quantity[index]
+                })
+            })
+            setCartItems(object);
+        }
+    };
+
+    useEffect(()=>{
+        if(auth.user)
+            getCartItems();
+    },[auth.user]);
+    // console.log(cartItems);
+
     return (
         <>
             <Head>
@@ -56,7 +82,15 @@ export default function Layout({ title, children }) {
                                     </div>
                                 </Link>
                                 <Link href='/sell' className="p-4 font-bold">Sell Product</Link>
-                                <button className="p-3" onClick={showUserInfo}>
+                                <Link href='/cart' className="flex p-4 font-bold">
+                                    <AiOutlineShoppingCart className="mt-1 mr-1"/>Cart
+                                    {cartItems.length > 0 && (
+                                        <span className="ml-1 rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white">
+                                            {cartItems.reduce((a,c) => a+c.quantity, 0)}
+                                        </span>
+                                    )}
+                                </Link>
+                                <button className="p-3" data-te-toggle="tooltip" title={auth.user.name}>
                                     <img src={`http://localhost:8080/${auth.user.avatar}`} className="h-[30px] w-[30px] object-cover rounded-full"></img>
                                 </button>
                                 <button className="p-4 font-bold" onClick={handleLogout}>

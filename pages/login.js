@@ -29,9 +29,11 @@ export default function Login() {
         if(res.data.success){
           toast.success(res.data.message);
           setAuth({
+            ...auth,
             user:res.data.user,
             token:res.data.token
           });
+          window.localStorage.setItem('auth',JSON.stringify(res.data));
           router.push('/');
         }
         else{
