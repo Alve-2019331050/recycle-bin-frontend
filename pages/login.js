@@ -3,7 +3,7 @@ import { useAuth } from "@/context/auth";
 import axios from "axios";
 import Link from 'next/link';
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaFacebookF, FaGoogle, FaLinkedinIn, FaRegEnvelope
 } from 'react-icons/fa';
@@ -13,32 +13,38 @@ import {
 import { toast } from 'react-toastify';
 
 export default function Login() {
-  const [email,setEmail] = useState('');
-  const [password,setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const router = useRouter();
-  const [auth,setAuth] = useAuth();
+  const [auth, setAuth] = useAuth();
 
-  const handleLogin = async(e)=>{
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      console.log(email,password);
-        const res = await axios.post('http://localhost:8080/api/v1/auth/login',{
-          email,
-          password
+      console.log(email, password);
+      const res = await axios.post('http://localhost:8080/api/v1/auth/login', {
+        email,
+        password
+      });
+      if (res.data.success) {
+        toast.success(res.data.message);
+        setAuth({
+          ...auth,
+          user: res.data.user,
+          token: res.data.token
         });
-        if(res.data.success){
-          toast.success(res.data.message);
-          setAuth({
-            ...auth,
-            user:res.data.user,
-            token:res.data.token
-          });
-          window.localStorage.setItem('auth',JSON.stringify(res.data));
+        window.localStorage.setItem('auth', JSON.stringify(res.data));
+
+        //check user role and redirect accordingly
+        if (res.data.user.role == 'admin') {
+          router.push('/Admin');
+        } else {
           router.push('/');
         }
-        else{
-          toast.error(res.data.message);
-        }
+      }
+      else {
+        toast.error(res.data.message);
+      }
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong');
@@ -74,11 +80,11 @@ export default function Login() {
                 <div className='flex flex-col items-center'>
                   <div className='bg-gray-100 w-80 p-2 flex items-center mb-3'>
                     <FaRegEnvelope className='text-gray-400 m-3' />
-                    <input type='email' name='email' placeholder='Email' value={email} onChange={(e)=>setEmail(e.target.value)} className='bg-gray-100 text-base outline-none flex-1'></input>
+                    <input type='email' name='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} className='bg-gray-100 text-base outline-none flex-1'></input>
                   </div>
                   <div className='bg-gray-100 w-80 p-2 flex items-center'>
                     <MdLockOutline className='text-gray-400 m-3' />
-                    <input type='password' name='password' placeholder='Password' value={password} onChange={(e)=>setPassword(e.target.value)} className='bg-gray-100 text-base outline-none flex-1'></input>
+                    <input type='password' name='password' placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} className='bg-gray-100 text-base outline-none flex-1'></input>
                   </div>
                   <div className='flex w-80 mb-5 mt-3 justify-between'>
                     <label className='flex items-center text-xs'>
