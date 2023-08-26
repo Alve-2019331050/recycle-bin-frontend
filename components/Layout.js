@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { FiLogOut } from 'react-icons/fi';
 import { MdOutlineProductionQuantityLimits } from 'react-icons/md';
+import { PiNotificationBold } from 'react-icons/pi'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -66,14 +67,37 @@ export default function Layout({ title, children }) {
                 <header>
                     <nav className="flex justify-between h-16 shadow-md items-center px-20">
                         <Link href='/' className="text-2xl font-bold">RecycleBin</Link>
-                        {
-                            !auth.user ? (
-                                <div>
-                                    <Link href='/ProductCatalog' className="me-2 font-bold">Products</Link>
-                                    <Link href='/login' className="p-2 font-bold">LogIn</Link>
-                                    <Link href='/signup' className="p-2 font-bold">SignUp</Link>
+
+                        {!auth.user ? (
+                            // if no user signed in
+                            <div>
+                                <Link href='/ProductCatalog' className="me-2 font-bold">Products</Link>
+                                <Link href='/login' className="p-2 font-bold">LogIn</Link>
+                                <Link href='/signup' className="p-2 font-bold">SignUp</Link>
+                            </div>
+                        ) : (
+                            //if user signed in
+                            auth.user.role == 'admin' ? (
+
+                                //if user role is admin
+                                <div className="flex justify justify-between">
+                                    <Link href='/Admin' className="me-2 font-bold">
+                                        <div className="flex py-5">
+                                            <PiNotificationBold className="mt-1.5 me-2" />
+                                            Dashboard
+                                        </div>
+                                    </Link>
+                                    <button className="p-4 font-bold" onClick={handleLogout}>
+                                        <div className="flex">
+                                            <FiLogOut className="mt-1.5 me-2" />
+                                            LogOut
+                                        </div>
+                                    </button>
                                 </div>
+
                             ) : (
+
+                                //if user is not an admin
                                 <div className="flex justify between">
                                     <Link href='/ProductCatalog' className="p-4 font-bold">
                                         <div className="flex">
@@ -100,7 +124,9 @@ export default function Layout({ title, children }) {
                                         </div>
                                     </button>
                                 </div>
-                            )}
+                            )
+                        )}
+
                     </nav>
                 </header>
                 <main className="container m-auto mt-4 px-4">
