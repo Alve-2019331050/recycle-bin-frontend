@@ -155,7 +155,7 @@ const ProductCatalog = () => {
                             <button class="btn btn-primary hover:brightness-300">Search</button>
                         </div>
                         {
-                            searchData && searchData.length !==0 ? (
+                            searchData && searchData.length !== 0 ? (
                                 <div className="mt-10 absolute min-h-[30vh] max-w-[70vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
                                     {searchData.map((i,index)=>{
                                         const d = i.slug;
