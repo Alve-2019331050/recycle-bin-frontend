@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import Layout from "@/components/Layout";
 import { useAuth } from "@/context/auth";
+import { Button, Grid, TextField } from '@mui/material';
 import { Select } from 'antd';
 import axios from 'axios';
 import { useRouter } from "next/router";
@@ -98,7 +99,7 @@ export default function sell() {
                 <div className="grid grid-cols-4">
                     <div className="text-3xl">Create Product</div>
                     <div className="grid grid-rows-7">
-                        <div className="w-96">
+                        {/* <div className="w-96">
                             <Select
                                 placeholder="Select a category"
                                 size="large"
@@ -153,7 +154,72 @@ export default function sell() {
                             <button onClick={handleProductCreate} className="hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                                 Create Product
                             </button>
-                        </div>
+                        </div> */}
+                        <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                                <Select
+                                    placeholder="Select a category"
+                                    size="large"
+                                    showSearch
+                                    className="form-select mb-3" onChange={
+                                        (value) => { setCategory(value) }
+                                    }>
+                                    {categories?.map((cat, index) => (
+                                        <Option key={index} value={cat.name}>{cat.name}</Option>
+                                    ))}
+                                </Select>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <label className="hover:bg-blue-500 hover:cursor-pointer text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                                    {photo ? photo.name : "Upload product photo"}
+                                    <input type="file" name="photo" accept="image/*" onChange={(e) => setPhoto(e.target.files[0])} hidden />
+                                </label>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                required
+                                label="Product Name"
+                                fullWidth
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                required
+                                label="Product Slug"
+                                fullWidth
+                                value={slug}
+                                onChange={(e) => setSlug(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                required
+                                label="Product Description"
+                                multiline
+                                rows={4}
+                                fullWidth
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                required
+                                label="Product Price"
+                                type="number"
+                                fullWidth
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button type="submit" variant="contained" color="primary" onClick={handleProductCreate}>
+                                Sell Product
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </div>
                 </div>
             </div>

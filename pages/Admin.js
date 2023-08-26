@@ -1,7 +1,6 @@
-import Layout from '@/components/Layout'
-import React, { useState, useEffect } from 'react'
-import ProductCard from '@/components/ProductCard';
+import Layout from '@/components/Layout';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 
@@ -69,7 +68,7 @@ const Admin = () => {
                 <div key={rowIndex} className="row">
                     {row.map((product, index) => (
                         <div key={index} className="col-md-3">
-                            <div className="shadow border-gray-600 card mt-4 hover:scale-105 transition-all ease-in-out duration-500 cursor-pointer" style={{ width: '300px', height: '500px' }}>
+                            <div className="shadow border-gray-600 card mt-4 hover:scale-105 transition-all ease-in-out duration-500 cursor-pointer" style={{ width: '300px', height: '550px' }}>
                                 <img src={`http://localhost:8080/${product.photo}`} alt={product.name} className="h-[290px] w-[290px] object-cover m-1" />
                                 <div className="card-body">
                                     <h4 className="card-title text-center mt-1">
