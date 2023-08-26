@@ -16,7 +16,8 @@ const userOrder = () => {
             try {
                 const response = await axios.get(`http://localhost:8080/api/v1/cart/userorder/${auth.user.u_id}`);
                 if (response.data.success) {
-                    setOrders(response.data.orders);
+                    // console.log(response.data.data);
+                    setOrders(response.data.data);
                 } else {
                     console.error(response.data.message);
                 }
@@ -26,6 +27,7 @@ const userOrder = () => {
         }
         fetchOrders();
     }, []);
+    console.log(orders);
 
     return (
         <>
@@ -39,27 +41,22 @@ const userOrder = () => {
                 <table className="table mt-5">
                     <thead>
                         <tr>
-                            <th scope="col">#Order Id</th>
-                            <th scope="col">Products</th>
-                            <th scope="col">Total price</th>
+                            <th>#Order Id</th>
+                            <th>Products</th>
+
                         </tr>
                     </thead>
                     <tbody>
                         {/** Map order to table */}
-                        {orders.map(order => (
-                            <tr key={order.orderId}>
-                                <th scope="row">{order.orderId}</th>
-                                <td>
-                                    {/** Map products to table */}
-                                    {order.products.map((product, index) => (
-                                        <div key={index}>
-                                            {product.name} 
-                                        </div>
-                                    ))}
-                                </td>
-                                <td>{order.totalPrice}</td>
-                            </tr>
-                        ))}
+                        {
+                            orders && orders.map((item, index) => {
+                                // console.log(item.orderId);
+                                return (<tr key={index}>
+                                    <td>{item.orderId}</td>
+                                    <td>{item.p_id}</td>
+                                </tr>)
+                            })
+                        }
 
                     </tbody>
                 </table>
@@ -72,3 +69,17 @@ const userOrder = () => {
 
 export default userOrder
 
+// /*{orders.map(order => (
+//                             <tr key={order.orderId}>
+//                                 <th scope="row">{order.orderId}</th>
+//                                 <td>
+//                                     {/** Map products to table */}
+//                                     {order.products.map((product, index) => (
+//                                         <div key={index}>
+//                                             {order.p_id}
+//                                         </div>
+//                                     ))}
+//                                 </td>
+//                                 <td>{order.totalPrice}</td>
+//                             </tr>
+//                         ))}*/
