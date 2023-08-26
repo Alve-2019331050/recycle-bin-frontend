@@ -11,6 +11,7 @@ import { MdOutlineProductionQuantityLimits } from 'react-icons/md';
 import { PiNotificationBold } from 'react-icons/pi'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GrUnorderedList } from 'react-icons/gr';
 
 export default function Layout({ title, children }) {
     const [auth, setAuth] = useAuth();
@@ -87,6 +88,12 @@ export default function Layout({ title, children }) {
                                             Dashboard
                                         </div>
                                     </Link>
+                                    <Link href='/adminorder' className="me-2 font-bold">
+                                        <div className="flex py-5">
+                                            <GrUnorderedList className="mt-1.5 me-2 ml-1" />
+                                            Order
+                                        </div>
+                                    </Link>
                                     <button className="p-4 font-bold" onClick={handleLogout}>
                                         <div className="flex">
                                             <FiLogOut className="mt-1.5 me-2" />
@@ -114,6 +121,8 @@ export default function Layout({ title, children }) {
                                             </span>
                                         )}
                                     </Link>
+                                    <Link href='/userorder' className="p-4 font-bold">
+                                        Order</Link>
                                     <button className="p-3" data-te-toggle="tooltip" title={auth.user.name}>
                                         <img src={`http://localhost:8080/${auth.user.avatar}`} className="h-[30px] w-[30px] object-cover rounded-full"></img>
                                     </button>
