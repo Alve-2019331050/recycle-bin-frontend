@@ -1,7 +1,8 @@
-import Layout from '@/components/Layout'
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+/* eslint-disable react-hooks/rules-of-hooks */
+import Layout from '@/components/Layout';
 import { useAuth } from '@/context/auth';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 
 const userOrder = () => {
@@ -23,7 +24,6 @@ const userOrder = () => {
                 console.error('Error fetching orders:', error);
             }
         }
-
         fetchOrders();
     }, []);
 
@@ -40,7 +40,7 @@ const userOrder = () => {
                     <thead>
                         <tr>
                             <th scope="col">#Order Id</th>
-                            <th scope="col">Products(Quantity)</th>
+                            <th scope="col">Products</th>
                             <th scope="col">Total price</th>
                         </tr>
                     </thead>
@@ -53,7 +53,7 @@ const userOrder = () => {
                                     {/** Map products to table */}
                                     {order.products.map((product, index) => (
                                         <div key={index}>
-                                            {product.name} ({product.quantity})
+                                            {product.name} 
                                         </div>
                                     ))}
                                 </td>
