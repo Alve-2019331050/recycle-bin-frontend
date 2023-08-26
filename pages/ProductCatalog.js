@@ -7,12 +7,12 @@ import { toast } from 'react-toastify';
 
 
 const ProductCatalog = () => {
-    const [searchTerm,setSearchTerm] = useState('');
-    const [searchData,setSearchData] = useState(null);
-    const [products,setProducts] = useState([]);
-    const [categories,setCategories] = useState([]);
-    const [selectedCategory,setSelectedCategory] = useState([]);
-    const [selectedPriceRange,setSelectedPriceRange] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchData, setSearchData] = useState(null);
+    const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState([]);
+    const [selectedPriceRange, setSelectedPriceRange] = useState([]);
     const prices = [
         {
             min: '0',
@@ -40,109 +40,111 @@ const ProductCatalog = () => {
         }
     ];
 
-    const getAllProducts = async()=>{
-        try{
-            const {data} = await axios.get('http://localhost:8080/api/v1/product/get-product');
-            if(data?.success){
+    const getAllProducts = async () => {
+        try {
+            //change made to get approved product
+            const { data } = await axios.get('http://localhost:8080/api/v1/product/get-product/Approved');
+            console.log(data);
+            if (data?.success) {
                 setProducts(data?.products);
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
             toast.error('Something went wrong in getting products.');
         }
     };
 
-    const getFilteredProducts = async()=>{
-        try{
+    const getFilteredProducts = async () => {
+        try {
             var query = '';
-            if(selectedCategory.length || selectedPriceRange.length)
+            if (selectedCategory.length || selectedPriceRange.length)
                 query = query.concat('?');
-            if(selectedCategory.length)
+            if (selectedCategory.length)
                 query = query.concat('category=');
-            selectedCategory.map((item,index)=>{
-                if(index>0)
+            selectedCategory.map((item, index) => {
+                if (index > 0)
                     query = query.concat(',');
                 query = query.concat(item);
             });
-            if(selectedCategory.length && selectedPriceRange.length)
+            if (selectedCategory.length && selectedPriceRange.length)
                 query = query.concat('&');
-            if(selectedPriceRange.length)
+            if (selectedPriceRange.length)
                 query = query.concat('price=');
-            selectedPriceRange.map((item,index)=>{
-                if(index>0)
+            selectedPriceRange.map((item, index) => {
+                if (index > 0)
                     query = query.concat(',');
                 query = query.concat(item);
             });
             console.log(query);
-            const {data} = await axios.get(`http://localhost:8080/api/v1/product/get-filtered-product${query}`);
-            if(data?.success){
+            const { data } = await axios.get(`http://localhost:8080/api/v1/product/get-filtered-product${query}`);
+            if (data?.success) {
                 setProducts(data?.products);
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
             toast.error('Something went wrong in getting products.');
         }
     };
 
-    const getAllCategories = async()=>{
-        try{
-            const {data} = await axios.get('http://localhost:8080/api/v1/category/allcategories');
-            if(data?.success){
+    const getAllCategories = async () => {
+        try {
+            const { data } = await axios.get('http://localhost:8080/api/v1/category/allcategories');
+            if (data?.success) {
                 setCategories(data?.categories);
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
             toast.error('Something went wrong in getting categories.');
         }
     };
 
-    const handleSearchChange = (e) =>{
+    const handleSearchChange = (e) => {
         const term = e.target.value;
         setSearchTerm(term);
 
-        const filteredProducts = products && products.filter((product)=>
+        const filteredProducts = products && products.filter((product) =>
             product.name.toLowerCase().includes(term.toLowerCase())
         );
-        if(term){
+        if (term) {
             setSearchData(filteredProducts);
         }
-        else{
+        else {
             setSearchData(null);
         }
     };
-    
-    const handleCategoryChange = (e)=>{
+
+    const handleCategoryChange = (e) => {
         var updatedList = [...selectedCategory];
-        if(e.target.checked){
+        if (e.target.checked) {
             updatedList.push(e.target.value);
         }
-        else{
-            updatedList.splice(selectedCategory.indexOf(e.target.value),1);
+        else {
+            updatedList.splice(selectedCategory.indexOf(e.target.value), 1);
         }
-        
+
         setSelectedCategory(updatedList);
     };
 
-    const handlePriceChange = (e)=>{
+    const handlePriceChange = (e) => {
         var updatedList = [...selectedPriceRange];
-        if(e.target.checked){
+        if (e.target.checked) {
             updatedList.push(e.target.value);
         }
-        else{
-            updatedList.splice(selectedPriceRange.indexOf(e.target.value),1);
+        else {
+            updatedList.splice(selectedPriceRange.indexOf(e.target.value), 1);
         }
         setSelectedPriceRange(updatedList);
     };
 
-    
+
     useEffect(() => {
         getAllCategories();
         getAllProducts();
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         getFilteredProducts();
-    },[selectedCategory,selectedPriceRange]);
+    }, [selectedCategory, selectedPriceRange]);
     return (
         <Layout>
             <div className="row">
@@ -157,10 +159,10 @@ const ProductCatalog = () => {
                         {
                             searchData && searchData.length !== 0 ? (
                                 <div className="mt-10 absolute min-h-[30vh] max-w-[70vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
-                                    {searchData.map((i,index)=>{
+                                    {searchData.map((i, index) => {
                                         const d = i.slug;
-                                        const productSlug = d.replace(/\s+/g,"-");
-                                        return(
+                                        const productSlug = d.replace(/\s+/g, "-");
+                                        return (
                                             // eslint-disable-next-line react/jsx-key
                                             <Link href={`/product/${productSlug}`}>
                                                 <div className="mt-5 w-full flex items-start-py-3">
@@ -171,21 +173,21 @@ const ProductCatalog = () => {
                                         );
                                     })}
                                 </div>
-                            ):null
+                            ) : null
                         }
                     </div>
                     <div className="row">
                         {/** bring product types here */}
                         <h6 className="mb-3"><b>Product Categories</b></h6>
                         <div className="form-check px-5">
-                            <input className="form-check-input" type="checkbox" value="" id="allProduct" checked/>
-                                <label className="form-check-label" for="allProduct">
-                                    All Products
-                                </label>
+                            <input className="form-check-input" type="checkbox" value="" id="allProduct" checked />
+                            <label className="form-check-label" for="allProduct">
+                                All Products
+                            </label>
                         </div>
                         {
-                            categories.map((cat,index)=>{
-                                return(
+                            categories.map((cat, index) => {
+                                return (
                                     <div className="form-check px-5" key={index}>
                                         <input className="form-check-input" type="checkbox" value={cat.name} id="{cat.name}" onChange={handleCategoryChange} />
                                         <label className="form-check-label" for={cat.name}>
@@ -194,22 +196,22 @@ const ProductCatalog = () => {
                                     </div>
                                 );
                             })
-                        }   
+                        }
                     </div>
                     <div class="row">
                         {/** bring product price range here */}
                         <h6 className="mb-3"><b>Price Ranges</b></h6>
                         <div className="form-check px-5">
-                            <input className="form-check-input" type="checkbox" value="" id="allPrice" checked/>
-                                <label className="form-check-label" for="allPrice">
-                                    All 
-                                </label>
+                            <input className="form-check-input" type="checkbox" value="" id="allPrice" checked />
+                            <label className="form-check-label" for="allPrice">
+                                All
+                            </label>
                         </div>
                         {
-                            prices.map((price,index)=>{
-                                return(
+                            prices.map((price, index) => {
+                                return (
                                     <div className="form-check px-5" key={index}>
-                                        <input className="form-check-input" type="checkbox" value={`${price.min}-${price.max}`} id={index} onChange={handlePriceChange}/>
+                                        <input className="form-check-input" type="checkbox" value={`${price.min}-${price.max}`} id={index} onChange={handlePriceChange} />
                                         <label className="form-check-label" for={index}>
                                             {price.min} - {price.max} Tk.
                                         </label>
@@ -225,8 +227,8 @@ const ProductCatalog = () => {
                     <div className='font-bold text-3xl text-pink-800 mx-2'>Products Collection</div>
                     <div className='grid grid-cols-3'>
                         {
-                            products.map((product,index)=>{
-                                return(
+                            products.map((product, index) => {
+                                return (
                                     <div key={index}>
                                         <Link href={`/product/${product.slug}`}>
                                             <ProductCard product={product} />
