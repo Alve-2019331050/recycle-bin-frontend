@@ -36,6 +36,20 @@ function Cart() {
     }
   }
 
+  const handleCheckOut = async() =>{
+    try {
+        const {data} = axios.put('http://localhost:8080/api/v1/cart/place-order',{
+            cartItems,  
+            u_id:auth.user.u_id
+        });
+        const {data:r} = axios.delete(`http://localhost:8080/api/v1/cart/delete/${auth.user.u_id}`);
+        getCartItems();
+    } catch (error) {
+        console.log(error);
+        toast.error('Error in creating order');
+    }
+  }
+
   return (
     <Layout title="Shopping Cart">
         <div className="mb-1 ml-5 mt-5 text-4xl font-bold text-blue-600">Shopping Cart</div>
@@ -90,7 +104,7 @@ function Cart() {
                                 </div>
                             </li>  
                             <li>
-                                <button className="bg-lime-700 rounded-md ml-14 p-2 text-white hover:bg-lime-600">Check Out</button>
+                                <button className="bg-lime-700 rounded-md ml-14 p-2 text-white hover:bg-lime-600" onClick={handleCheckOut}>Check Out</button>
                             </li>
                         </ul>
                     </div>
