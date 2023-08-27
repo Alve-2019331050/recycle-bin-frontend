@@ -99,62 +99,6 @@ export default function sell() {
                 <div className="grid grid-cols-4">
                     <div className="text-3xl">Create Product</div>
                     <div className="grid grid-rows-7">
-                        {/* <div className="w-96">
-                            <Select
-                                placeholder="Select a category"
-                                size="large"
-                                showSearch
-                                className="form-select mb-3" onChange={
-                                    (value) => { setCategory(value) }
-                                }>
-                                {categories?.map((cat, index) => (
-                                    <Option key={index} value={cat.name}>{cat.name}</Option>
-                                ))}
-                            </Select>
-                        </div>
-                        <div className="mt-5">
-                            <label className="hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                                {photo ? photo.name : "Upload product photo"}
-                                <input type="file" name="photo" accept="image/*" onChange={(e) => setPhoto(e.target.files[0])} hidden />
-                            </label>
-                        </div>
-                        <div className="mt-5 w-40">
-                            <input type="text"
-                                value={name}
-                                placeholder="product's name"
-                                className="form-control"
-                                onChange={(e) => setName(e.target.value)}
-                            />
-                        </div>
-                        <div className="mt-5 w-40">
-                            <input type="text"
-                                value={slug}
-                                placeholder="product's slug"
-                                className="form-control"
-                                onChange={(e) => setSlug(e.target.value)}
-                            />
-                        </div>
-                        <div className="mt-5 w-40">
-                            <input type="textbox"
-                                value={description}
-                                placeholder="write product's description"
-                                className="form-control"
-                                onChange={(e) => setDescription(e.target.value)}
-                            />
-                        </div>
-                        <div className="mt-5 w-40">
-                            <input type="number"
-                                value={price}
-                                placeholder="product's price"
-                                className="form-control"
-                                onChange={(e) => setPrice(e.target.value)}
-                            />
-                        </div>
-                        <div className="mt-5">
-                            <button onClick={handleProductCreate} className="hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                                Create Product
-                            </button>
-                        </div> */}
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
                                 <Select
@@ -177,46 +121,46 @@ export default function sell() {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                required
-                                label="Product Name"
-                                fullWidth
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                    required
+                                    label="Product Name"
+                                    fullWidth
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                required
-                                label="Product Slug"
-                                fullWidth
-                                value={slug}
-                                onChange={(e) => setSlug(e.target.value)}
+                                    required
+                                    label="Product Slug"
+                                    fullWidth
+                                    value={slug}
+                                    onChange={(e) => setSlug(e.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                required
-                                label="Product Description"
-                                multiline
-                                rows={4}
-                                fullWidth
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
+                                    required
+                                    label="Product Description"
+                                    multiline
+                                    rows={4}
+                                    fullWidth
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                required
-                                label="Product Price"
-                                type="number"
-                                fullWidth
-                                value={price}
-                                onChange={(e) => setPrice(e.target.value)}
+                                    required
+                                    label="Product Price"
+                                    type="number"
+                                    fullWidth
+                                    value={price}
+                                    onChange={(e) => setPrice(e.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <Button type="submit" variant="contained" color="primary" onClick={handleProductCreate}>
-                                Sell Product
+                                    Sell Product
                                 </Button>
                             </Grid>
                         </Grid>

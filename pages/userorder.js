@@ -36,9 +36,9 @@ const userOrder = () => {
                     <h1><b>Order History</b></h1>
                 </div>
 
-                {/* //table */}
+                {/* table */}
 
-                <table className="table mt-5">
+                <table className="table mt-5 shadow-2xl table-hover table-border">
                     <thead>
                         <tr>
                             <th>#Order Id</th>
@@ -50,10 +50,10 @@ const userOrder = () => {
                         {/** Map order to table */}
                         {
                             orders && orders.map((item, index) => {
-                                // console.log(item.orderId);
+                                console.log(item.name);
                                 return (<tr key={index}>
                                     <td>{item.orderId}</td>
-                                    <td>{item.p_id}</td>
+                                    <td>{item.name}</td>
                                 </tr>)
                             })
                         }
@@ -69,17 +69,3 @@ const userOrder = () => {
 
 export default userOrder
 
-// /*{orders.map(order => (
-//                             <tr key={order.orderId}>
-//                                 <th scope="row">{order.orderId}</th>
-//                                 <td>
-//                                     {/** Map products to table */}
-//                                     {order.products.map((product, index) => (
-//                                         <div key={index}>
-//                                             {order.p_id}
-//                                         </div>
-//                                     ))}
-//                                 </td>
-//                                 <td>{order.totalPrice}</td>
-//                             </tr>
-//                         ))}*/
